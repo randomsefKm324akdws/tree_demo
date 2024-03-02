@@ -1,0 +1,51 @@
+﻿using da.interfaces.INodesRepository;
+
+namespace bl.NodesService.Models;
+
+public class NodesService : INodesService
+{
+	private readonly INodesRepository _nodesRepository;
+
+	public NodesService(INodesRepository nodesRepository)
+	{
+		_nodesRepository = nodesRepository;
+	}
+
+	public async Task<Node> GetAsync()
+	{
+		var flatDtos = await _nodesRepository.GetAsync();
+
+		var apiModels = new List<Node>();
+		foreach (var x in flatDtos)
+		{
+			apiModels.Add(new Node
+			{
+				Id = x.Id,
+				ParentId = x.ParentId,
+				Name = x.Name,
+				ChildNodes = new List<Node>()
+			});
+		}
+
+		var nodes = apiModels.ToLookup(d => d.ParentId);
+
+		var rootNode = nodes[null].SingleOrDefault();
+		if (rootNode != null)
+		{
+			FillChildNodes(rootNode, nodes);	
+		}
+
+		return rootNode;
+	}
+
+	private void FillChildNodes(Node node, ILookup<int?, Node> nodes)
+	{
+		var childNodes = nodes[node.Id];
+		node.ChildNodes = childNodes;
+
+		foreach (var childNode in node.ChildNodes)
+		{
+			FillChildNodes(childNode, nodes);
+		}
+	}
+}
