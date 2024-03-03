@@ -48,24 +48,26 @@ public partial class AppDbContext : DbContext
 
         modelBuilder.Entity<Node>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Nodes_Id");
+            entity.HasKey(e => new { e.TreeName, e.Id });
 
-            entity.HasIndex(e => e.ParentId, "IX_Nodes_ParentId");
-
-            entity.HasIndex(e => e.ParentId, "Nodes_ParentId_Null_Index")
+            entity.HasIndex(e => new { e.ParentId, e.TreeName }, "Nodes_ParentId_Null_Index")
                 .IsUnique()
                 .HasFilter("([ParentId] IS NULL)");
 
+            entity.HasIndex(e => e.TreeName, "Nodes_TreeName_index");
+
+            entity.Property(e => e.TreeName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.Parent)
-	            .WithMany(p => p.Children);
-            
-            entity.HasMany(d => d.Children)
-	            .WithOne(p => p.Parent);
+            entity.HasOne(d => d.Parent).WithMany(p => p.Children)
+                .HasForeignKey(d => new { d.TreeName, d.ParentId })
+                .HasConstraintName("Nodes_Nodes_TreeName_Id_fk");
         });
 
         OnModelCreatingPartial(modelBuilder);
