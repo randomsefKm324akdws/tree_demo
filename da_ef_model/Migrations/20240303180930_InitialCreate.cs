@@ -54,7 +54,7 @@ namespace da_ef_model.Migrations
             migrationBuilder.CreateIndex(
                 name: "Nodes_ParentId_Null_Index",
                 table: "Nodes",
-                columns: new[] { "ParentId", "TreeName" },
+                columns: new[] { "TreeName", "ParentId" },
                 unique: true,
                 filter: "([ParentId] IS NULL)");
         }

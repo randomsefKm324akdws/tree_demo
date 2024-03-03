@@ -75,9 +75,9 @@ namespace da_ef_model.Migrations
 
                     b.HasKey("TreeName", "Id");
 
-                    b.HasIndex("TreeName", "ParentId");
+                    b.HasIndex(new[] { "TreeName", "ParentId" }, "IX_Nodes_TreeName_ParentId");
 
-                    b.HasIndex(new[] { "ParentId", "TreeName" }, "Nodes_ParentId_Null_Index")
+                    b.HasIndex(new[] { "TreeName", "ParentId" }, "Nodes_ParentId_Null_Index")
                         .IsUnique()
                         .HasFilter("([ParentId] IS NULL)");
 

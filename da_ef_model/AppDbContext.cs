@@ -50,7 +50,9 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => new { e.TreeName, e.Id });
 
-            entity.HasIndex(e => new { e.ParentId, e.TreeName }, "Nodes_ParentId_Null_Index")
+            entity.HasIndex(e => new { e.TreeName, e.ParentId }, "IX_Nodes_TreeName_ParentId");
+
+            entity.HasIndex(e => new { e.TreeName, e.ParentId }, "Nodes_ParentId_Null_Index")
                 .IsUnique()
                 .HasFilter("([ParentId] IS NULL)");
 
