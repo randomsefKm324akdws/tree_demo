@@ -1,6 +1,6 @@
-@api_HostAddress = http://localhost:5008
+@api_HostAddress = http://localhost:22915
 
-GET {{api_HostAddress}}/Nodes/Get
+GET {{api_HostAddress}}/Nodes/Get?treename=tree1
 Accept: application/json
 
 ###
@@ -11,7 +11,9 @@ Accept-Language: en-US,en;q=0.5
 
 {
     "Name": "test",
-    "ParentId": 2
+    "ParentId": 19,
+    "TreeName": "tree1"
+
 }
 
 ###
@@ -22,7 +24,8 @@ Accept-Language: en-US,en;q=0.5
 
 {
     "Name": "newName",
-    "Id": 1
+    "Id": 1,
+    "TreeName": "tree1"
 }
 
 ###
