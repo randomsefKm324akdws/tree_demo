@@ -73,7 +73,7 @@ public class NodesRepository : INodesRepository
 	{
 		try
 		{
-			var item = await _context.Nodes.Where(x => x.Id == dto.Id && x.TreeName== dto.TreeName).SingleOrDefaultAsync();
+			var item = await _context.Nodes.Where(x => x.TreeName == dto.TreeName && x.Id == dto.Id).SingleOrDefaultAsync();
 			if (item == null)
 			{
 				throw new NoSuchNodeException();
@@ -98,17 +98,17 @@ public class NodesRepository : INodesRepository
 		}
 	}
 
-	public async Task DeleteAsync(int id)
+	public async Task DeleteAsync(NodeDeleteDto dto)
 	{
 		try
 		{
-			var node = await _context.Nodes.Where(x => x.Id == id).SingleOrDefaultAsync();
+			var node = await _context.Nodes.Where(x => x.TreeName == dto.TreeName && x.Id == dto.Id).SingleOrDefaultAsync();
 			if (node == null)
 			{
 				throw new NoSuchNodeException();
 			}
 			
-			var childNodesCount = await _context.Nodes.Where(x => x.ParentId == id).CountAsync();
+			var childNodesCount = await _context.Nodes.Where(x => x.TreeName == dto.TreeName && x.ParentId == dto.Id).CountAsync();
 			if (childNodesCount > 0)
 			{
 				throw new HaveToDeleteChildNodesFirstException();

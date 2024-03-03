@@ -80,11 +80,15 @@ public class NodesController : ControllerBase
 
 	
 	[HttpDelete]
-	public async Task<IActionResult> Delete(int id)
+	public async Task<IActionResult> Delete(string treeName, int id)
 	{
 		try
 		{
-			await _repository.DeleteAsync(id);
+			await _repository.DeleteAsync(new NodeDeleteDto
+			{
+				Id = id,
+				TreeName = treeName
+			});
 			var response = StatusCode((int)HttpStatusCode.OK, true);
 			return response;
 		}

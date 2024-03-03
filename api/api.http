@@ -11,7 +11,7 @@ Accept-Language: en-US,en;q=0.5
 
 {
     "Name": "test",
-    "ParentId": 19,
+    "ParentId": 40,
     "TreeName": "tree1"
 
 }
@@ -30,7 +30,7 @@ Accept-Language: en-US,en;q=0.5
 
 ###
 
-POST {{api_HostAddress}}/Nodes/Delete/1
+POST {{api_HostAddress}}/Nodes/Delete?id=40&treeName=tree1
 Accept: application/json
 
 

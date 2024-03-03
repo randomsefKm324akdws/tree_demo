@@ -281,9 +281,21 @@ public class Tests
 			TreeName = treeName
 		});
 
-		await _nodesRepository.DeleteAsync(node2B);
-		await _nodesRepository.DeleteAsync(node2);
-		await _nodesRepository.DeleteAsync(node1);
+		await _nodesRepository.DeleteAsync(new NodeDeleteDto
+		{
+			Id = node2B,
+			TreeName = treeName
+		});
+		await _nodesRepository.DeleteAsync(new NodeDeleteDto
+		{
+			Id = node2,
+			TreeName = treeName
+		});
+		await _nodesRepository.DeleteAsync(new NodeDeleteDto
+		{
+			Id = node1,
+			TreeName = treeName
+		});
 	}
 
 
@@ -323,7 +335,11 @@ public class Tests
 			TreeName = treeName
 		});
 		
-		await _nodesRepository.DeleteAsync(node1);
+		await _nodesRepository.DeleteAsync(new NodeDeleteDto
+		{
+			Id = node1,
+			TreeName = treeName
+		});
 	}
 	
 	[TestMethod]
