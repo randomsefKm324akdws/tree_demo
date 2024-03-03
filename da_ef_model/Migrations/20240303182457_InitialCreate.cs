@@ -47,16 +47,16 @@ namespace da_ef_model.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Nodes_ParentId_Null",
+                name: "IX_Nodes_TreeName_ParentId",
+                table: "Nodes",
+                columns: new[] { "TreeName", "ParentId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Nodes_TreeName_ParentId_Null",
                 table: "Nodes",
                 columns: new[] { "TreeName", "ParentId" },
                 unique: true,
                 filter: "([ParentId] IS NULL)");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Nodes_TreeName_ParentId",
-                table: "Nodes",
-                columns: new[] { "TreeName", "ParentId" });
         }
 
         /// <inheritdoc />
