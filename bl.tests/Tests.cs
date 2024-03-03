@@ -42,13 +42,13 @@ public class Tests
 
 
 		mockRepo
-			.Setup(x => x.GetAsync())
+			.Setup(x => x.GetAsync(It.IsAny<string>()))
 			.ReturnsAsync(mockNodes.ToArray());
 
 
 		//act
 		INodesService service = new NodesService.Models.NodesService(mockRepo.Object);
-		var rootNode = await service.GetAsync();
+		var rootNode = await service.GetAsync("test");
 
 		//assert
 		Assert.IsNotNull(rootNode);

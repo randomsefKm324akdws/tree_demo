@@ -2,5 +2,5 @@
 
 public interface INodesService
 {
-	public Task<Node> GetAsync();
+	public Task<Node> GetAsync(string treeName);
 }

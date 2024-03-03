@@ -11,9 +11,9 @@ public class NodesService : INodesService
 		_nodesRepository = nodesRepository;
 	}
 
-	public async Task<Node> GetAsync()
+	public async Task<Node> GetAsync(string treeName)
 	{
-		var flatDtos = await _nodesRepository.GetAsync();
+		var flatDtos = await _nodesRepository.GetAsync(treeName);
 
 		var models = new List<Node>();
 		foreach (var x in flatDtos)

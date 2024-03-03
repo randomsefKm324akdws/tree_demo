@@ -32,7 +32,8 @@ public class Tests
 	[TestMethod]
 	public async Task NodeCreate()
 	{
-		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		var treeName = "test" + DateTime.Now;
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync(treeName);
 		
 		int? rootId;
 		if (existingRecords.Length == 0)
@@ -40,7 +41,8 @@ public class Tests
 			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
 			{
 				Name = "test",
-				ParentId = null
+				ParentId = null,
+				TreeName = treeName
 			});			
 		}
 		else
@@ -51,7 +53,8 @@ public class Tests
 		var createdId = await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = rootId
+			ParentId = rootId,
+			TreeName = treeName
 		});
 
 		Assert.IsTrue(rootId > 0);
@@ -62,7 +65,8 @@ public class Tests
 	[ExpectedException(typeof(WrongNameLengthException))]
 	public async Task NodeCreate_NameNull()
 	{
-		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		var treeName = "test" + DateTime.Now;
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync(treeName);
 		
 		int? rootId;
 		if (existingRecords.Length == 0)
@@ -70,7 +74,8 @@ public class Tests
 			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
 			{
 				Name = "test",
-				ParentId = null
+				ParentId = null,
+				TreeName = treeName
 			});			
 		}
 		else
@@ -81,7 +86,8 @@ public class Tests
 		var createdId = await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = null,
-			ParentId = rootId
+			ParentId = rootId,
+			TreeName = treeName
 		});
 
 		Assert.IsTrue(rootId > 0);
@@ -92,7 +98,8 @@ public class Tests
 	[ExpectedException(typeof(WrongNameLengthException))]
 	public async Task NodeCreate_NameLength()
 	{
-		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		var treeName = "test" + DateTime.Now;
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync(treeName);
 		
 		int? rootId;
 		if (existingRecords.Length == 0)
@@ -100,7 +107,8 @@ public class Tests
 			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
 			{
 				Name = "test",
-				ParentId = null
+				ParentId = null,
+				TreeName = treeName
 			});			
 		}
 		else
@@ -111,7 +119,8 @@ public class Tests
 		var createdId = await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = new string('a', 51),
-			ParentId = rootId
+			ParentId = rootId,
+			TreeName = treeName
 		});
 
 		Assert.IsTrue(rootId > 0);
@@ -122,7 +131,8 @@ public class Tests
 	[TestMethod]
 	public async Task NodeUpdate()
 	{
-		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		var treeName = "test" + DateTime.Now;
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync(treeName);
 		
 		int? rootId;
 		if (existingRecords.Length == 0)
@@ -130,7 +140,8 @@ public class Tests
 			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
 			{
 				Name = "test",
-				ParentId = null
+				ParentId = null,
+				TreeName = treeName
 			});			
 		}
 		else
@@ -141,13 +152,15 @@ public class Tests
 		var createdId = await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = rootId
+			ParentId = rootId,
+			TreeName = treeName
 		});
 		
 		await _nodesRepository.UpdateAsync(new NodeUpdateDto()
 		{
 			Name = "newtest",
-			Id = createdId
+			Id = createdId,
+			TreeName = treeName
 		});
 	}
 	
@@ -155,7 +168,8 @@ public class Tests
 	[ExpectedException(typeof(WrongNameLengthException))]
 	public async Task NodeUpdate_NameNull()
 	{
-		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		var treeName = "test" + DateTime.Now;
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync(treeName);
 		
 		int? rootId;
 		if (existingRecords.Length == 0)
@@ -163,7 +177,8 @@ public class Tests
 			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
 			{
 				Name = "test",
-				ParentId = null
+				ParentId = null,
+				TreeName = treeName
 			});			
 		}
 		else
@@ -174,13 +189,15 @@ public class Tests
 		var createdId = await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = rootId
+			ParentId = rootId,
+			TreeName = treeName
 		});
 		
 		await _nodesRepository.UpdateAsync(new NodeUpdateDto()
 		{
 			Name = null,
-			Id = createdId
+			Id = createdId,
+			TreeName = treeName
 		});
 	}
 	
@@ -189,7 +206,8 @@ public class Tests
 	[ExpectedException(typeof(WrongNameLengthException))]
 	public async Task NodeUpdate_NameLength()
 	{
-		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		var treeName = "test" + DateTime.Now;
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync(treeName);
 		
 		int? rootId;
 		if (existingRecords.Length == 0)
@@ -197,7 +215,8 @@ public class Tests
 			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
 			{
 				Name = "test",
-				ParentId = null
+				ParentId = null,
+				TreeName = treeName
 			});			
 		}
 		else
@@ -208,20 +227,23 @@ public class Tests
 		var createdId = await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = rootId
+			ParentId = rootId,
+			TreeName = treeName
 		});
 		
 		await _nodesRepository.UpdateAsync(new NodeUpdateDto()
 		{
 			Name = new string('a', 51),
-			Id = createdId
+			Id = createdId,
+			TreeName = treeName
 		});
 	}
 	
 	[TestMethod]
 	public async Task NodeDelete()
 	{
-		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		var treeName = "test" + DateTime.Now;
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync(treeName);
 		
 		int? rootId;
 		if (existingRecords.Length == 0)
@@ -229,7 +251,8 @@ public class Tests
 			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
 			{
 				Name = "test",
-				ParentId = null
+				ParentId = null,
+				TreeName = treeName
 			});			
 		}
 		else
@@ -240,19 +263,22 @@ public class Tests
 		var node1 = await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = rootId
+			ParentId = rootId,
+			TreeName = treeName
 		});
 		
 		var node2= await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = node1
+			ParentId = node1,
+			TreeName = treeName
 		});
 		
 		var node2B= await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = node1
+			ParentId = node1,
+			TreeName = treeName
 		});
 
 		await _nodesRepository.DeleteAsync(node2B);
@@ -265,7 +291,8 @@ public class Tests
 	[ExpectedException(typeof(HaveToDeleteChildNodesFirstException))]
 	public async Task NodeDelete_HaveToDeleteChildNodesFirstException()
 	{
-		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		var treeName = "test" + DateTime.Now;
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync(treeName);
 		
 		int? rootId;
 		if (existingRecords.Length == 0)
@@ -273,7 +300,8 @@ public class Tests
 			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
 			{
 				Name = "test",
-				ParentId = null
+				ParentId = null,
+				TreeName = treeName
 			});			
 		}
 		else
@@ -284,13 +312,15 @@ public class Tests
 		var node1 = await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = rootId
+			ParentId = rootId,
+			TreeName = treeName
 		});
 		
 		var _= await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = node1
+			ParentId = node1,
+			TreeName = treeName
 		});
 		
 		await _nodesRepository.DeleteAsync(node1);
@@ -300,16 +330,19 @@ public class Tests
 	[ExpectedException(typeof(CannotHave2RootNodesException))]
 	public async Task NodeCreate_DontAllow2Roots()
 	{
+		var treeName = "test" + DateTime.Now;
 		await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = null
+			ParentId = null,
+			TreeName = treeName
 		});
 
 		await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = null
+			ParentId = null,
+			TreeName = treeName
 		});
 	}
 
@@ -318,10 +351,12 @@ public class Tests
 	[ExpectedException(typeof(WrongParentIdException))]
 	public async Task NodeCreate_WrongParentIdException()
 	{
+		var treeName = "test" + DateTime.Now;
 		await _nodesRepository.CreateAsync(new NodeCreateDto
 		{
 			Name = "test",
-			ParentId = -1
+			ParentId = -1,
+			TreeName = treeName
 		});
 	}
 	

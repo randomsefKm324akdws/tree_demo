@@ -14,14 +14,16 @@ public class NodesRepository : INodesRepository
 		_context = appDbContext;
 	}
 
-	public async Task<NodeReadDto[]> GetAsync()
+	public async Task<NodeReadDto[]> GetAsync(string treeName)
 	{
 		NodeReadDto[] res = await _context.Nodes
+			.Where(n=>n.TreeName == treeName)
 			.Select(x => new NodeReadDto
 			{
 				Id = x.Id,
 				ParentId = x.ParentId,
-				Name = x.Name
+				Name = x.Name,
+				
 			}).ToArrayAsync();
 		return res;
 	}
@@ -33,7 +35,8 @@ public class NodesRepository : INodesRepository
 			Node item = new Node
 			{
 				Name = dto.Name,
-				ParentId = dto.ParentId
+				ParentId = dto.ParentId,
+				TreeName = dto.TreeName
 			};
 			await _context.Nodes.AddAsync(item);
 			await _context.SaveChangesAsync();
@@ -47,7 +50,7 @@ public class NodesRepository : INodesRepository
 				throw new CannotHave2RootNodesException();
 			}			
 			
-			if (ex.InnerException != null && ex.InnerException.Message.Contains("FK_Nodes_Nodes_ParentId"))
+			if (ex.InnerException != null && ex.InnerException.Message.Contains("Nodes_Nodes_TreeName_Id_fk"))
 			{
 				throw new WrongParentIdException();
 			}			
@@ -70,7 +73,7 @@ public class NodesRepository : INodesRepository
 	{
 		try
 		{
-			var item = await _context.Nodes.Where(x => x.Id == dto.Id).SingleOrDefaultAsync();
+			var item = await _context.Nodes.Where(x => x.Id == dto.Id && x.TreeName== dto.TreeName).SingleOrDefaultAsync();
 			if (item == null)
 			{
 				throw new NoSuchNodeException();
@@ -121,7 +124,7 @@ public class NodesRepository : INodesRepository
 				throw new HaveToDeleteChildNodesFirstException();
 			}
 			
-			if (ex.InnerException != null && ex.InnerException.Message.Contains("FK_Nodes_Nodes_ParentId"))
+			if (ex.InnerException != null && ex.InnerException.Message.Contains("Nodes_Nodes_TreeName_Id_fk"))
 			{
 				throw new HaveToDeleteChildNodesFirstException();
 			}

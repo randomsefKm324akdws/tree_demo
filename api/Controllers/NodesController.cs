@@ -23,11 +23,11 @@ public class NodesController : ControllerBase
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> Get()
+	public async Task<IActionResult> Get(string treeName)
 	{
 		try
 		{
-			var data = await _nodesService.GetAsync();
+			var data = await _nodesService.GetAsync(treeName);
 			var response = StatusCode((int)HttpStatusCode.OK, data);
 			return response;
 		}
@@ -46,7 +46,8 @@ public class NodesController : ControllerBase
 			var id = await _repository.CreateAsync(new NodeCreateDto
 			{
 				Name = item.Name,
-				ParentId = item.ParentId
+				ParentId = item.ParentId,
+				TreeName = item.TreeName
 			});
 			var response = StatusCode((int)HttpStatusCode.OK, id);
 			return response;
@@ -65,7 +66,8 @@ public class NodesController : ControllerBase
 			await _repository.UpdateAsync(new NodeUpdateDto
 			{
 				Id = item.Id,
-				Name = item.Name
+				Name = item.Name,
+				TreeName = item.TreeName
 			});
 			var response = StatusCode((int)HttpStatusCode.OK, true);
 			return response;
