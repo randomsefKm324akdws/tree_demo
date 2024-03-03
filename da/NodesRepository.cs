@@ -45,7 +45,7 @@ public class NodesRepository : INodesRepository
 		}
 		catch (DbUpdateException ex)
 		{
-			if (ex.InnerException != null && ex.InnerException.Message.Contains("Nodes_ParentId_Null_Index"))
+			if (ex.InnerException != null && ex.InnerException.Message.Contains("IX_Nodes_ParentId_Null"))
 			{
 				throw new CannotHave2RootNodesException();
 			}			
@@ -119,7 +119,7 @@ public class NodesRepository : INodesRepository
 		}
 		catch (DbUpdateException ex)
 		{
-			if (ex.InnerException != null && ex.InnerException.Message.Contains("Nodes_ParentId_Null_Index"))
+			if (ex.InnerException != null && ex.InnerException.Message.Contains("IX_Nodes_ParentId_Null"))
 			{
 				throw new HaveToDeleteChildNodesFirstException();
 			}

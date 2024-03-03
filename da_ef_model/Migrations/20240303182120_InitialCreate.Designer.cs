@@ -12,8 +12,8 @@ using da_ef_model;
 namespace da_ef_model.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240303180940_m1")]
-    partial class m1
+    [Migration("20240303182120_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,11 +78,11 @@ namespace da_ef_model.Migrations
 
                     b.HasKey("TreeName", "Id");
 
-                    b.HasIndex(new[] { "TreeName", "ParentId" }, "IX_Nodes_TreeName_ParentId");
-
-                    b.HasIndex(new[] { "TreeName", "ParentId" }, "Nodes_ParentId_Null_Index")
+                    b.HasIndex(new[] { "TreeName", "ParentId" }, "IX_Nodes_ParentId_Null")
                         .IsUnique()
                         .HasFilter("([ParentId] IS NULL)");
+
+                    b.HasIndex(new[] { "TreeName", "ParentId" }, "IX_Nodes_TreeName_ParentId");
 
                     b.ToTable("Nodes");
                 });
