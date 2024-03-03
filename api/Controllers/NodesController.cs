@@ -33,7 +33,7 @@ public class NodesController : ControllerBase
 		}
 		catch (Exception ex)
 		{
-			return await GetExceptionResponse(ex, null, (int)HttpStatusCode.InternalServerError, false);
+			return await GetExceptionResponse(ex, null);
 		}
 	}
 
@@ -51,21 +51,9 @@ public class NodesController : ControllerBase
 			var response = StatusCode((int)HttpStatusCode.OK, id);
 			return response;
 		}
-		catch (WrongParentIdException ex)
-		{
-			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.UnprocessableEntity, true);
-		}
-		catch (CannotHave2RootNodesException ex)
-		{
-			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.UnprocessableEntity, true);
-		}
-		catch (WrongNameLengthException ex)
-		{
-			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.UnprocessableEntity, true);
-		}
 		catch (Exception ex)
 		{
-			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.InternalServerError, false);
+			return await GetExceptionResponse(ex, item);
 		}
 	}
 
@@ -82,17 +70,9 @@ public class NodesController : ControllerBase
 			var response = StatusCode((int)HttpStatusCode.OK, true);
 			return response;
 		}
-		catch (NoSuchNodeException ex)
-		{
-			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.NotFound, true);
-		}
-		catch (WrongNameLengthException ex)
-		{
-			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.UnprocessableEntity, true);
-		}
 		catch (Exception ex)
 		{
-			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.InternalServerError, false);
+			return await GetExceptionResponse(ex, item);
 		}
 	}
 
@@ -106,30 +86,22 @@ public class NodesController : ControllerBase
 			var response = StatusCode((int)HttpStatusCode.OK, true);
 			return response;
 		}
-		catch (NoSuchNodeException ex)
-		{
-			return await GetExceptionResponse(ex, id, (int)HttpStatusCode.NotFound, true);
-		}		
-		catch (HaveToDeleteChildNodesFirstException ex)
-		{
-			return await GetExceptionResponse(ex, id, (int)HttpStatusCode.Conflict, true);
-		}
 		catch (Exception ex)
 		{
-			return await GetExceptionResponse(ex, id, (int)HttpStatusCode.InternalServerError, false);
+			return await GetExceptionResponse(ex, id);
 		}
 	}
 	
-	private async Task<ObjectResult> GetExceptionResponse(Exception ex, object data, int httpCode, bool isSecure)
+	private async Task<ObjectResult> GetExceptionResponse(Exception ex, object data)
 	{
 		var id = await _logRepository.LogExceptionAsync(ex, JsonSerializer.Serialize(data));
-		ObjectResult resp =  StatusCode(httpCode, new ExceptionApi
+		ObjectResult resp =  StatusCode((int)HttpStatusCode.InternalServerError, new ExceptionApi
 		{
-			Type = isSecure ? "Secure" : "Exception",
+			Type = ex is SecureException ? "Secure" : "Exception",
 			Id = Convert.ToString(id),
 			Data = new ExceptionApiData
 			{
-				Message = isSecure ? ex?.Message : $"Internal server error ID = {id}", 
+				Message = ex is SecureException ? ex.Message : $"Internal server error ID = {id}", 
 			}
 		});
 
