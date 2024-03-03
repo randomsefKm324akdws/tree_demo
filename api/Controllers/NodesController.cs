@@ -94,7 +94,12 @@ public class NodesController : ControllerBase
 	
 	private async Task<ObjectResult> GetExceptionResponse(Exception ex, object data)
 	{
-		var id = await _logRepository.LogExceptionAsync(ex, JsonSerializer.Serialize(data));
+		string dataStr = null;
+		if (data != null)
+		{
+			dataStr = JsonSerializer.Serialize(data);
+		}
+		var id = await _logRepository.LogExceptionAsync(ex, dataStr);
 		ObjectResult resp =  StatusCode((int)HttpStatusCode.InternalServerError, new ExceptionApi
 		{
 			Type = ex is SecureException ? "Secure" : "Exception",
