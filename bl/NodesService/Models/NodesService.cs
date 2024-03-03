@@ -15,10 +15,10 @@ public class NodesService : INodesService
 	{
 		var flatDtos = await _nodesRepository.GetAsync();
 
-		var apiModels = new List<Node>();
+		var models = new List<Node>();
 		foreach (var x in flatDtos)
 		{
-			apiModels.Add(new Node
+			models.Add(new Node
 			{
 				Id = x.Id,
 				ParentId = x.ParentId,
@@ -27,7 +27,7 @@ public class NodesService : INodesService
 			});
 		}
 
-		var nodes = apiModels.ToLookup(d => d.ParentId);
+		var nodes = models.ToLookup(d => d.ParentId);
 
 		var rootNode = nodes[null].SingleOrDefault();
 		if (rootNode != null)
