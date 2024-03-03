@@ -59,6 +59,67 @@ public class Tests
 	}
 	
 	[TestMethod]
+	[ExpectedException(typeof(WrongNameLengthException))]
+	public async Task NodeCreate_NameNull()
+	{
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		
+		int? rootId;
+		if (existingRecords.Length == 0)
+		{
+			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
+			{
+				Name = "test",
+				ParentId = null
+			});			
+		}
+		else
+		{
+			rootId = existingRecords.Single(x => x.ParentId == null).Id;
+		}
+
+		var createdId = await _nodesRepository.CreateAsync(new NodeCreateDto
+		{
+			Name = null,
+			ParentId = rootId
+		});
+
+		Assert.IsTrue(rootId > 0);
+		Assert.IsTrue(createdId > 0);
+	}
+	
+	[TestMethod]
+	[ExpectedException(typeof(WrongNameLengthException))]
+	public async Task NodeCreate_NameLength()
+	{
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		
+		int? rootId;
+		if (existingRecords.Length == 0)
+		{
+			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
+			{
+				Name = "test",
+				ParentId = null
+			});			
+		}
+		else
+		{
+			rootId = existingRecords.Single(x => x.ParentId == null).Id;
+		}
+
+		var createdId = await _nodesRepository.CreateAsync(new NodeCreateDto
+		{
+			Name = new string('a', 51),
+			ParentId = rootId
+		});
+
+		Assert.IsTrue(rootId > 0);
+		Assert.IsTrue(createdId > 0);
+	}
+
+	
+	[TestMethod]
 	public async Task NodeUpdate()
 	{
 		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
@@ -86,6 +147,73 @@ public class Tests
 		await _nodesRepository.UpdateAsync(new NodeUpdateDto()
 		{
 			Name = "newtest",
+			Id = createdId
+		});
+	}
+	
+	[TestMethod]
+	[ExpectedException(typeof(WrongNameLengthException))]
+	public async Task NodeUpdate_NameNull()
+	{
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		
+		int? rootId;
+		if (existingRecords.Length == 0)
+		{
+			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
+			{
+				Name = "test",
+				ParentId = null
+			});			
+		}
+		else
+		{
+			rootId = existingRecords.Single(x => x.ParentId == null).Id;
+		}
+
+		var createdId = await _nodesRepository.CreateAsync(new NodeCreateDto
+		{
+			Name = "test",
+			ParentId = rootId
+		});
+		
+		await _nodesRepository.UpdateAsync(new NodeUpdateDto()
+		{
+			Name = null,
+			Id = createdId
+		});
+	}
+	
+	
+	[TestMethod]
+	[ExpectedException(typeof(WrongNameLengthException))]
+	public async Task NodeUpdate_NameLength()
+	{
+		NodeReadDto[] existingRecords = await _nodesRepository.GetAsync();
+		
+		int? rootId;
+		if (existingRecords.Length == 0)
+		{
+			rootId = await _nodesRepository.CreateAsync(new NodeCreateDto
+			{
+				Name = "test",
+				ParentId = null
+			});			
+		}
+		else
+		{
+			rootId = existingRecords.Single(x => x.ParentId == null).Id;
+		}
+
+		var createdId = await _nodesRepository.CreateAsync(new NodeCreateDto
+		{
+			Name = "test",
+			ParentId = rootId
+		});
+		
+		await _nodesRepository.UpdateAsync(new NodeUpdateDto()
+		{
+			Name = new string('a', 51),
 			Id = createdId
 		});
 	}

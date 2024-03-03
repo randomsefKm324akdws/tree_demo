@@ -12,8 +12,8 @@ using da_ef_model;
 namespace da_ef_model.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240302181148_m1")]
-    partial class m1
+    [Migration("20240303052212_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,6 +63,7 @@ namespace da_ef_model.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");

@@ -57,6 +57,7 @@ public partial class AppDbContext : DbContext
                 .HasFilter("([ParentId] IS NULL)");
 
             entity.Property(e => e.Name)
+                .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
 

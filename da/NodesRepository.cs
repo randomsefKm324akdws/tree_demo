@@ -50,6 +50,16 @@ public class NodesRepository : INodesRepository
 			if (ex.InnerException != null && ex.InnerException.Message.Contains("FK_Nodes_Nodes_ParentId"))
 			{
 				throw new WrongParentIdException();
+			}			
+			
+			if (ex.InnerException != null && ex.InnerException.Message.Contains("Cannot insert the value NULL"))
+			{
+				throw new WrongNameLengthException();
+			}			
+			
+			if (ex.InnerException != null && ex.InnerException.Message.Contains("String or binary data would be truncated"))
+			{
+				throw new WrongNameLengthException();
 			}
 
 			throw;
@@ -58,14 +68,31 @@ public class NodesRepository : INodesRepository
 
 	public async Task UpdateAsync(NodeUpdateDto dto)
 	{
-		var item = await _context.Nodes.Where(x => x.Id == dto.Id).SingleOrDefaultAsync();
-		if (item == null)
+		try
 		{
-			throw new NoSuchNodeException();
-		}
+			var item = await _context.Nodes.Where(x => x.Id == dto.Id).SingleOrDefaultAsync();
+			if (item == null)
+			{
+				throw new NoSuchNodeException();
+			}
 		
-		item.Name = dto.Name;
-		await _context.SaveChangesAsync();
+			item.Name = dto.Name;
+			await _context.SaveChangesAsync();
+		}
+		catch (DbUpdateException ex)
+		{
+			if (ex.InnerException != null && ex.InnerException.Message.Contains("Cannot insert the value NULL"))
+			{
+				throw new WrongNameLengthException();
+			}
+
+			if (ex.InnerException != null && ex.InnerException.Message.Contains("String or binary data would be truncated"))
+			{
+				throw new WrongNameLengthException();
+			}
+			
+			throw;
+		}
 	}
 
 	public async Task DeleteAsync(int id)

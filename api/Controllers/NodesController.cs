@@ -59,6 +59,10 @@ public class NodesController : ControllerBase
 		{
 			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.UnprocessableEntity, true);
 		}
+		catch (WrongNameLengthException ex)
+		{
+			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.UnprocessableEntity, true);
+		}
 		catch (Exception ex)
 		{
 			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.InternalServerError, false);
@@ -81,6 +85,10 @@ public class NodesController : ControllerBase
 		catch (NoSuchNodeException ex)
 		{
 			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.NotFound, true);
+		}
+		catch (WrongNameLengthException ex)
+		{
+			return await GetExceptionResponse(ex, item, (int)HttpStatusCode.UnprocessableEntity, true);
 		}
 		catch (Exception ex)
 		{
