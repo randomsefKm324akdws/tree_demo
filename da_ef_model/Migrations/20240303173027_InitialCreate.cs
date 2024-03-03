@@ -57,11 +57,6 @@ namespace da_ef_model.Migrations
                 columns: new[] { "ParentId", "TreeName" },
                 unique: true,
                 filter: "([ParentId] IS NULL)");
-
-            migrationBuilder.CreateIndex(
-                name: "Nodes_TreeName_index",
-                table: "Nodes",
-                column: "TreeName");
         }
 
         /// <inheritdoc />

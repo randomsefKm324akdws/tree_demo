@@ -81,8 +81,6 @@ namespace da_ef_model.Migrations
                         .IsUnique()
                         .HasFilter("([ParentId] IS NULL)");
 
-                    b.HasIndex(new[] { "TreeName" }, "Nodes_TreeName_index");
-
                     b.ToTable("Nodes");
                 });
 

@@ -54,8 +54,6 @@ public partial class AppDbContext : DbContext
                 .IsUnique()
                 .HasFilter("([ParentId] IS NULL)");
 
-            entity.HasIndex(e => e.TreeName, "Nodes_TreeName_index");
-
             entity.Property(e => e.TreeName)
                 .HasMaxLength(50)
                 .IsUnicode(false);

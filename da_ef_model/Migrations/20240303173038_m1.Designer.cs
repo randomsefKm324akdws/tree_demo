@@ -12,7 +12,7 @@ using da_ef_model;
 namespace da_ef_model.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240303165521_m1")]
+    [Migration("20240303173038_m1")]
     partial class m1
     {
         /// <inheritdoc />
@@ -83,8 +83,6 @@ namespace da_ef_model.Migrations
                     b.HasIndex(new[] { "ParentId", "TreeName" }, "Nodes_ParentId_Null_Index")
                         .IsUnique()
                         .HasFilter("([ParentId] IS NULL)");
-
-                    b.HasIndex(new[] { "TreeName" }, "Nodes_TreeName_index");
 
                     b.ToTable("Nodes");
                 });
