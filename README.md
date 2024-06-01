@@ -1,7 +1,7 @@
 //Task description:
 https://test.vmarmysh.com/user/description/backend
 
-Create ASP.NET Core application.
+Create ASP.NET Core 6/7 application. You don't need creating UI!
 
 Your application has to use code one of the databases: MsSQL, MySQL, PostgreSQL (preferred). You have to use code first migration.
 
